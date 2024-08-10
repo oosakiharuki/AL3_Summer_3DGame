@@ -4,10 +4,7 @@
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() {
-	delete model_;
-	delete player_;
-}
+GameScene::~GameScene() {}
 
 void GameScene::Initialize() {
 
@@ -15,12 +12,14 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	model_ = Model::Create();
+	//model_ = Model::Create();
+	model_.reset(Model::Create());
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 	viewProjection_.Initialize();
 
-	player_ = new Player();
-	player_->Initialize(model_,textureHandle_);
+	//player_ = new Player();
+	player_ = std::make_unique<Player>();
+	player_->Initialize(model_.get(), textureHandle_);
 }
 
 void GameScene::Update() {
